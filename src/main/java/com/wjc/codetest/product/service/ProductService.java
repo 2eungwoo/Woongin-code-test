@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -26,6 +27,7 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    @Transactional(readOnly = true)
     public Product getProductById(Long productId) {
         Optional<Product> productOptional = productRepository.findById(productId);
         if (!productOptional.isPresent()) {
@@ -46,11 +48,13 @@ public class ProductService {
         productRepository.delete(product);
     }
 
+    @Transactional(readOnly = true)
     public Page<Product> getProductListByCategory(GetProductListRequest dto) {
         PageRequest pageRequest = PageRequest.of(dto.page(), dto.size(), Sort.by(Sort.Direction.ASC, "category"));
         return productRepository.findAllByCategory(dto.category(), pageRequest);
     }
 
+    @Transactional(readOnly = true)
     public List<String> getUniqueProductListByCategories() {
         return productRepository.findDistinctCategories();
     }
