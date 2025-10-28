@@ -3,13 +3,11 @@ package com.wjc.codetest.product.controller;
 import com.wjc.codetest.product.controller.dto.request.CreateProductRequest;
 import com.wjc.codetest.product.controller.dto.request.GetProductListRequest;
 import com.wjc.codetest.product.controller.dto.response.ProductResponse;
-import com.wjc.codetest.product.model.domain.Product;
 import com.wjc.codetest.product.controller.dto.request.UpdateProductRequest;
 import com.wjc.codetest.product.controller.dto.response.ProductListResponse;
 import com.wjc.codetest.product.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,15 +39,16 @@ public class ProductController {
 
     @PutMapping(value = "/products/{productId}")
     public ResponseEntity<ProductResponse> updateProductById(@PathVariable(name = "productId") Long productId,
-                                                     @RequestBody @Valid UpdateProductRequest dto) {
+                                                             @RequestBody @Valid UpdateProductRequest dto)
+    {
         ProductResponse responseDto = productService.updateProductById(productId, dto);
         return ResponseEntity.ok(responseDto);
     }
 
-//    @GetMapping(value = "/products")
-//    public ResponseEntity<ProductListResponse> getProductListByCategory(@RequestBody GetProductListRequest dto) {
-//        //
-//    }
+    @GetMapping(value = "/products")
+    public ResponseEntity<ProductListResponse> getProductListByCategory(@ModelAttribute GetProductListRequest dto) {
+        return ResponseEntity.ok(productService.getProductListByCategory(dto));
+    }
 
     @GetMapping(value = "/products/categories")
     public ResponseEntity<List<String>> getUniqueCategories(){
