@@ -8,12 +8,13 @@ import lombok.Setter;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity(name = "products")
+@Entity(name = "Product")
+@Table(name = "products")
 public class Product {
 
     @Id
-    @Column(name = "product_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "category", nullable = false)
