@@ -38,17 +38,15 @@ public class ProductController {
     }
 
     @PutMapping(value = "/products/{productId}")
-    public ResponseEntity<Product> updateProductById(@RequestBody UpdateProductRequest dto){
-        Product product = productService.updateProductById(dto);
+    public ResponseEntity<Product> updateProductById(@PathVariable(name = "productId") Long productId,
+                                                     @RequestBody UpdateProductRequest dto) {
+        Product product = productService.updateProductById(productId, dto);
         return ResponseEntity.ok(product);
     }
 
     @GetMapping(value = "/products")
-    public ResponseEntity<ProductListResponse> getProductListByCategory(
-        @PathVariable(name = "productId") Long productId,
-        @RequestBody GetProductListRequest dto)
-    {
-        Page<Product> productList = productService.getProductListByCategory(productId, dto);
+    public ResponseEntity<ProductListResponse> getProductListByCategory(@RequestBody GetProductListRequest dto) {
+        Page<Product> productList = productService.getProductListByCategory(dto);
         return ResponseEntity.ok(new ProductListResponse(productList.getContent(), productList.getTotalPages(), productList.getTotalElements(), productList.getNumber()));
     }
 
