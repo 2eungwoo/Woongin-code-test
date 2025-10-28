@@ -52,11 +52,11 @@ public class ProductService {
     @Transactional(readOnly = true)
     public Page<Product> getProductList(GetProductListRequest dto) {
         PageRequest pageRequest = PageRequest.of(dto.page(), dto.size(), Sort.by(Sort.Direction.ASC, "category"));
-        return productRepository.findAllProducts(dto.category(), pageRequest);
+        return productRepository.findAllByCategory(dto.category(), pageRequest);
     }
 
     @Transactional(readOnly = true)
     public List<String> getUniqueProductListByCategories() {
-        return productRepository.findDistinctProductsByCategories();
+        return productRepository.findDistinctCategories();
     }
 }
