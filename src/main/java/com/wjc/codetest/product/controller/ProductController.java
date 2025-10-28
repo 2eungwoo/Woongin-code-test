@@ -22,8 +22,8 @@ public class ProductController {
 
     @GetMapping(value = "/products/{productId}")
     public ResponseEntity<ProductResponse> getProductById(@PathVariable(name = "productId") Long productId){
-        Product product = productService.getProductById(productId);
-        return ResponseEntity.ok(ProductResponse.from(product));
+        ProductResponse responseDto = productService.getProductById(productId);
+        return ResponseEntity.ok(responseDto);
     }
 
     @PostMapping(value = "/products")
@@ -34,22 +34,21 @@ public class ProductController {
     }
 
     @DeleteMapping(value = "/products/{productId}")
-    public ResponseEntity<Long> deleteProductById(@PathVariable(name = "productId") Long productId){
-        Long targetId = productService.deleteProductById(productId);
-        return ResponseEntity.ok(targetId);
+    public ResponseEntity<ProductResponse> deleteProductById(@PathVariable(name = "productId") Long productId){
+        ProductResponse responseDto = productService.deleteProductById(productId);
+        return ResponseEntity.ok(responseDto);
     }
 
     @PutMapping(value = "/products/{productId}")
-    public ResponseEntity<Product> updateProductById(@PathVariable(name = "productId") Long productId,
+    public ResponseEntity<ProductResponse> updateProductById(@PathVariable(name = "productId") Long productId,
                                                      @RequestBody UpdateProductRequest dto) {
-        Product product = productService.updateProductById(productId, dto);
-        return ResponseEntity.ok(product);
+        ProductResponse responseDto = productService.updateProductById(productId, dto);
+        return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping(value = "/products")
     public ResponseEntity<ProductListResponse> getProductListByCategory(@RequestBody GetProductListRequest dto) {
-        Page<Product> productList = productService.getProductListByCategory(dto);
-        return ResponseEntity.ok(new ProductListResponse(productList.getContent(), productList.getTotalPages(), productList.getTotalElements(), productList.getNumber()));
+        //
     }
 
     @GetMapping(value = "/products/categories")
