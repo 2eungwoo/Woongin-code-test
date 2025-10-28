@@ -1,12 +1,14 @@
 package com.wjc.codetest.product.model.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity(name = "products")
 public class Product {
 
     @Id
@@ -14,25 +16,23 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "category")
+    @Column(name = "category", nullable = false)
     private String category;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    protected Product() {
-    }
-
-    public Product(String category, String name) {
+    private Product(String category, String name) {
         this.category = category;
         this.name = name;
     }
 
-    public String getCategory() {
-        return category;
+    public static Product createProduct(String category, String name) {
+        return new Product(category, name);
     }
 
-    public String getName() {
-        return name;
+    public void updateProduct(String category, String name) {
+        this.category = category;
+        this.name = name;
     }
 }
