@@ -7,6 +7,7 @@ import com.wjc.codetest.product.model.domain.Product;
 import com.wjc.codetest.product.controller.dto.request.UpdateProductRequest;
 import com.wjc.codetest.product.controller.dto.response.ProductListResponse;
 import com.wjc.codetest.product.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class ProductController {
     }
 
     @PostMapping(value = "/products")
-    public ResponseEntity<ProductResponse> createProduct(@RequestBody CreateProductRequest dto){
+    public ResponseEntity<ProductResponse> createProduct(@RequestBody @Valid CreateProductRequest dto){
         ProductResponse responseDto = productService.createProduct(dto);
         return ResponseEntity.ok(responseDto);
     }
@@ -40,7 +41,7 @@ public class ProductController {
 
     @PutMapping(value = "/products/{productId}")
     public ResponseEntity<ProductResponse> updateProductById(@PathVariable(name = "productId") Long productId,
-                                                     @RequestBody UpdateProductRequest dto) {
+                                                     @RequestBody @Valid UpdateProductRequest dto) {
         ProductResponse responseDto = productService.updateProductById(productId, dto);
         return ResponseEntity.ok(responseDto);
     }
