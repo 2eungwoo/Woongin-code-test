@@ -80,6 +80,20 @@ public class GlobalExceptionHandler {
             .body(e.getMessage());
     }
 
+    @ResponseBody // 파라미터 범위 안맞거나 null, 음수 등의 예외 경우
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
+        log.error("status :: {}, errorType :: {}, errorCause :: {}",
+            HttpStatus.BAD_REQUEST,
+            "illegalArgumentException",
+            e.getMessage()
+        );
+
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(e.getMessage());
+    }
+
     @ResponseBody // 그 외 나머지 예외
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> handleUnexpectedException(Exception e) {
