@@ -2,6 +2,8 @@ package com.wjc.codetest.product.service;
 
 import com.wjc.codetest.product.controller.dto.request.CreateProductRequest;
 import com.wjc.codetest.product.controller.dto.request.GetProductListRequest;
+import com.wjc.codetest.product.controller.dto.response.ProductListResponse;
+import com.wjc.codetest.product.controller.dto.response.ProductResponse;
 import com.wjc.codetest.product.model.domain.Product;
 import com.wjc.codetest.product.controller.dto.request.UpdateProductRequest;
 import com.wjc.codetest.product.repository.ProductRepository;
@@ -25,34 +27,35 @@ public class ProductService {
     private final ProductValidator productValidator;
 
     @Transactional
-    public Product createProduct(CreateProductRequest dto) {
+    public ProductResponse createProduct(CreateProductRequest dto) {
         Product product = Product.createProduct(dto.category(), dto.name());
-        return productRepository.save(product);
+        Product targetProduct = productRepository.save(product);
+        return ProductResponse.from(targetProduct);
     }
 
     @Transactional(readOnly = true)
-    public Product getProductById(Long productId) {
-        return productValidator.validateExistOrThrow(productId);
+    public ProductResponse getProductById(Long productId) {
+        Product product = productValidator.validateExistOrThrow(productId);
+        return ProductResponse.from(product);
     }
 
     @Transactional
-    public Product updateProductById(Long productId, UpdateProductRequest dto) {
+    public ProductResponse updateProductById(Long productId, UpdateProductRequest dto) {
         Product targetProduct = productValidator.validateExistOrThrow(productId);
         targetProduct.updateProduct(dto.category(), dto.name());
-        return targetProduct;
-
+        return ProductResponse.from(targetProduct);
     }
 
     @Transactional
-    public void deleteProductById(Long productId) {
+    public Long deleteProductById(Long productId) {
         Product targetProduct = productValidator.validateExistOrThrow(productId);
         productRepository.delete(targetProduct);
+        return targetProduct.getId();
     }
 
     @Transactional(readOnly = true)
-    public Page<Product> getProductListByCategory(GetProductListRequest dto) {
-        PageRequest pageRequest = PageRequest.of(dto.page(), dto.size(), Sort.by(Sort.Direction.ASC, "category"));
-        return productRepository.findAllByCategory(dto.category(), pageRequest);
+    public Page<ProductListResponse> getProductListByCategory(GetProductListRequest dto) {
+        //
     }
 
     @Transactional(readOnly = true)

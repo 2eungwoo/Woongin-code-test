@@ -2,6 +2,7 @@ package com.wjc.codetest.product.controller;
 
 import com.wjc.codetest.product.controller.dto.request.CreateProductRequest;
 import com.wjc.codetest.product.controller.dto.request.GetProductListRequest;
+import com.wjc.codetest.product.controller.dto.response.ProductResponse;
 import com.wjc.codetest.product.model.domain.Product;
 import com.wjc.codetest.product.controller.dto.request.UpdateProductRequest;
 import com.wjc.codetest.product.controller.dto.response.ProductListResponse;
@@ -20,21 +21,22 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping(value = "/products/{productId}")
-    public ResponseEntity<Product> getProductById(@PathVariable(name = "productId") Long productId){
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable(name = "productId") Long productId){
         Product product = productService.getProductById(productId);
-        return ResponseEntity.ok(product);
+        return ResponseEntity.ok(ProductResponse.from(product));
     }
 
     @PostMapping(value = "/products")
-    public ResponseEntity<Product> createProduct(@RequestBody CreateProductRequest dto){
+    public ResponseEntity<Long> createProduct(@RequestBody CreateProductRequest dto){
         Product product = productService.createProduct(dto);
-        return ResponseEntity.ok(product);
+        ProductResponse productResponse = ProductResponse.from(product);
+        return ResponseEntity.ok(productResponse.id());
     }
 
     @DeleteMapping(value = "/products/{productId}")
-    public ResponseEntity<Boolean> deleteProductById(@PathVariable(name = "productId") Long productId){
-        productService.deleteProductById(productId);
-        return ResponseEntity.ok(true);
+    public ResponseEntity<Long> deleteProductById(@PathVariable(name = "productId") Long productId){
+        Long targetId = productService.deleteProductById(productId);
+        return ResponseEntity.ok(targetId);
     }
 
     @PutMapping(value = "/products/{productId}")
