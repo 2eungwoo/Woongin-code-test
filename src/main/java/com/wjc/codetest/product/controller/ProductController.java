@@ -19,37 +19,37 @@ import java.util.List;
 public class ProductController {
     private final ProductService productService;
 
-    @GetMapping(value = "/get/product/by/{productId}")
+    @GetMapping(value = "/products/{productId}")
     public ResponseEntity<Product> getProductById(@PathVariable(name = "productId") Long productId){
         Product product = productService.getProductById(productId);
         return ResponseEntity.ok(product);
     }
 
-    @PostMapping(value = "/create/product")
+    @PostMapping(value = "/products")
     public ResponseEntity<Product> createProduct(@RequestBody CreateProductRequest dto){
         Product product = productService.create(dto);
         return ResponseEntity.ok(product);
     }
 
-    @PostMapping(value = "/delete/product/{productId}")
+    @DeleteMapping(value = "/products/{productId}")
     public ResponseEntity<Boolean> deleteProduct(@PathVariable(name = "productId") Long productId){
         productService.deleteById(productId);
         return ResponseEntity.ok(true);
     }
 
-    @PostMapping(value = "/update/product")
+    @PatchMapping(value = "/products/{productId}")
     public ResponseEntity<Product> updateProduct(@RequestBody UpdateProductRequest dto){
         Product product = productService.update(dto);
         return ResponseEntity.ok(product);
     }
 
-    @PostMapping(value = "/product/list")
+    @GetMapping(value = "/products")
     public ResponseEntity<ProductListResponse> getProductListByCategory(@RequestBody GetProductListRequest dto){
         Page<Product> productList = productService.getListByCategory(dto);
         return ResponseEntity.ok(new ProductListResponse(productList.getContent(), productList.getTotalPages(), productList.getTotalElements(), productList.getNumber()));
     }
 
-    @GetMapping(value = "/product/category/list")
+    @GetMapping(value = "/products/categories")
     public ResponseEntity<List<String>> getProductListByCategory(){
         List<String> uniqueCategories = productService.getUniqueCategories();
         return ResponseEntity.ok(uniqueCategories);
