@@ -22,7 +22,7 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     public Product createProduct(CreateProductRequest dto) {
-        Product product = new Product(dto.getCategory(), dto.getName());
+        Product product = Product.createProduct(dto.category(), dto.name());
         return productRepository.save(product);
     }
 
@@ -34,12 +34,10 @@ public class ProductService {
         return productOptional.get();
     }
 
-    public Product updateProductById(UpdateProductRequest dto) {
-        Product product = getProductById(dto.getId());
-        product.setCategory(dto.getCategory());
-        product.setName(dto.getName());
-        Product updatedProduct = productRepository.save(product);
-        return updatedProduct;
+    public Product updateProductById(Long productId, UpdateProductRequest dto) {
+        Product product = getProductById(productId);
+        product.updateProduct(dto.category(), dto.name());
+        return productRepository.save(product);
 
     }
 
@@ -49,8 +47,8 @@ public class ProductService {
     }
 
     public Page<Product> getProductListByCategory(GetProductListRequest dto) {
-        PageRequest pageRequest = PageRequest.of(dto.getPage(), dto.getSize(), Sort.by(Sort.Direction.ASC, "category"));
-        return productRepository.findAllByCategory(dto.getCategory(), pageRequest);
+        PageRequest pageRequest = PageRequest.of(dto.page(), dto.size(), Sort.by(Sort.Direction.ASC, "category"));
+        return productRepository.findAllByCategory(dto.category(), pageRequest);
     }
 
     public List<String> getUniqueProductListByCategories() {
