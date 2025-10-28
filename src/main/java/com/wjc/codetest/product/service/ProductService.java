@@ -49,13 +49,13 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Product> getProductListByCategory(GetProductListRequest dto) {
+    public Page<Product> getProductList(GetProductListRequest dto) {
         PageRequest pageRequest = PageRequest.of(dto.page(), dto.size(), Sort.by(Sort.Direction.ASC, "category"));
-        return productRepository.findAllByCategory(dto.category(), pageRequest);
+        return productRepository.findAllProducts(dto.category(), pageRequest);
     }
 
     @Transactional(readOnly = true)
     public List<String> getUniqueProductListByCategories() {
-        return productRepository.findDistinctCategories();
+        return productRepository.findDistinctProductsByCategories();
     }
 }
