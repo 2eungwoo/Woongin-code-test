@@ -32,6 +32,7 @@ import lombok.Setter;
             @Entity(name = "Product")
             @Table(name = "products")
 
+        ps. 개인적으로 ProjectEntity 처럼 ~Entity 이렇게 엔티티 객체임을 명시하는 것도 좋다고 생각합니다.
  */
 public class Product {
 
