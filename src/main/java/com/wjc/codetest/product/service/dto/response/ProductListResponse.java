@@ -1,4 +1,4 @@
-package com.wjc.codetest.product.controller.dto.response;
+package com.wjc.codetest.product.service.dto.response;
 
 import java.util.List;
 

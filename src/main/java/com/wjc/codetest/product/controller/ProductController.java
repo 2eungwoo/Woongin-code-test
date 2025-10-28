@@ -2,9 +2,9 @@ package com.wjc.codetest.product.controller;
 
 import com.wjc.codetest.product.controller.dto.request.CreateProductRequest;
 import com.wjc.codetest.product.controller.dto.request.GetProductListRequest;
-import com.wjc.codetest.product.controller.dto.response.ProductResponse;
+import com.wjc.codetest.product.service.dto.response.ProductResponse;
 import com.wjc.codetest.product.controller.dto.request.UpdateProductRequest;
-import com.wjc.codetest.product.controller.dto.response.ProductListResponse;
+import com.wjc.codetest.product.service.dto.response.ProductListResponse;
 import com.wjc.codetest.product.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
