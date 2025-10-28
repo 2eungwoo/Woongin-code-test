@@ -27,31 +27,31 @@ public class ProductController {
 
     @PostMapping(value = "/products")
     public ResponseEntity<Product> createProduct(@RequestBody CreateProductRequest dto){
-        Product product = productService.create(dto);
+        Product product = productService.createProduct(dto);
         return ResponseEntity.ok(product);
     }
 
     @DeleteMapping(value = "/products/{productId}")
-    public ResponseEntity<Boolean> deleteProduct(@PathVariable(name = "productId") Long productId){
-        productService.deleteById(productId);
+    public ResponseEntity<Boolean> deleteProductById(@PathVariable(name = "productId") Long productId){
+        productService.deleteProductById(productId);
         return ResponseEntity.ok(true);
     }
 
     @PatchMapping(value = "/products/{productId}")
-    public ResponseEntity<Product> updateProduct(@RequestBody UpdateProductRequest dto){
-        Product product = productService.update(dto);
+    public ResponseEntity<Product> updateProductById(@RequestBody UpdateProductRequest dto){
+        Product product = productService.updateProductById(dto);
         return ResponseEntity.ok(product);
     }
 
     @GetMapping(value = "/products")
     public ResponseEntity<ProductListResponse> getProductListByCategory(@RequestBody GetProductListRequest dto){
-        Page<Product> productList = productService.getListByCategory(dto);
+        Page<Product> productList = productService.getProductListByCategory(dto);
         return ResponseEntity.ok(new ProductListResponse(productList.getContent(), productList.getTotalPages(), productList.getTotalElements(), productList.getNumber()));
     }
 
     @GetMapping(value = "/products/categories")
-    public ResponseEntity<List<String>> getProductListByCategory(){
-        List<String> uniqueCategories = productService.getUniqueCategories();
+    public ResponseEntity<List<String>> getUniqueProductListByCategories(){
+        List<String> uniqueCategories = productService.getUniqueProductListByCategories();
         return ResponseEntity.ok(uniqueCategories);
     }
 }

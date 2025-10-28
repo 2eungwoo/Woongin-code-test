@@ -21,7 +21,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public Product create(CreateProductRequest dto) {
+    public Product createProduct(CreateProductRequest dto) {
         Product product = new Product(dto.getCategory(), dto.getName());
         return productRepository.save(product);
     }
@@ -34,7 +34,7 @@ public class ProductService {
         return productOptional.get();
     }
 
-    public Product update(UpdateProductRequest dto) {
+    public Product updateProductById(UpdateProductRequest dto) {
         Product product = getProductById(dto.getId());
         product.setCategory(dto.getCategory());
         product.setName(dto.getName());
@@ -43,17 +43,17 @@ public class ProductService {
 
     }
 
-    public void deleteById(Long productId) {
+    public void deleteProductById(Long productId) {
         Product product = getProductById(productId);
         productRepository.delete(product);
     }
 
-    public Page<Product> getListByCategory(GetProductListRequest dto) {
+    public Page<Product> getProductListByCategory(GetProductListRequest dto) {
         PageRequest pageRequest = PageRequest.of(dto.getPage(), dto.getSize(), Sort.by(Sort.Direction.ASC, "category"));
         return productRepository.findAllByCategory(dto.getCategory(), pageRequest);
     }
 
-    public List<String> getUniqueCategories() {
+    public List<String> getUniqueProductListByCategories() {
         return productRepository.findDistinctCategories();
     }
 }
