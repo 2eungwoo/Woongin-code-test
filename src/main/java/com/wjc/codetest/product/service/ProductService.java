@@ -5,6 +5,7 @@ import com.wjc.codetest.product.controller.dto.request.GetProductListRequest;
 import com.wjc.codetest.product.model.domain.Product;
 import com.wjc.codetest.product.controller.dto.request.UpdateProductRequest;
 import com.wjc.codetest.product.repository.ProductRepository;
+import com.wjc.codetest.product.service.validator.ProductValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductValidator productValidator;
 
     public Product createProduct(CreateProductRequest dto) {
         Product product = Product.createProduct(dto.category(), dto.name());
@@ -29,11 +31,7 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public Product getProductById(Long productId) {
-        Optional<Product> productOptional = productRepository.findById(productId);
-        if (!productOptional.isPresent()) {
-            throw new RuntimeException("product not found");
-        }
-        return productOptional.get();
+        return productValidator.validateExistOrThrow(productId);
     }
 
     public Product updateProductById(Long productId, UpdateProductRequest dto) {

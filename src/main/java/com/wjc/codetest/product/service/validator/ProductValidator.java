@@ -11,7 +11,7 @@ public class ProductValidator {
 
     private final ProductRepository productRepository;
 
-    public Product isExist(Long productId) {
+    public Product validateExistOrThrow(Long productId) {
         return productRepository.findById(productId)
             .orElseThrow(() -> new ProductNotFoundException(productId));
     }
