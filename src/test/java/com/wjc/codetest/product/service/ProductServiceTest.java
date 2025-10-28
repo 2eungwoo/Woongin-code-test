@@ -132,7 +132,7 @@ class ProductServiceTest {
     @DisplayName("distinct 카테고리 목록 조회 성공")
     void get_distinct_categories_success() {
         // given
-        List<String> exmapleCategoryList = List.of("음료","디저트","음료");
+        List<String> exmapleCategoryList = List.of("음료","디저트");
         given(productRepository.findDistinctCategories()).willReturn(exmapleCategoryList);
 
         // when
