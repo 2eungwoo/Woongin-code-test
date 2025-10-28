@@ -54,9 +54,10 @@ public class ProductListResponse {
 
     [최종 의견 및 요약]
         - 내부 엔티티 객체를 필드로 갖게 하지 말 것
-        - 차라리 단일 Response랑 Page Metadata 분리해서 단일 Response를 포함한 ListResponse로 만들 것
-    [예시 클래스 설계]
+        - 단일 Response, Page Metadata 분리해서 ListResponse로 만드는 방법 고려해볼 것(a)
+    [(a) 클래스 설계 예시]
         ProductResponse(...){...}
         PageMetaResponse(...){...}
         ProductListResponse(List<ProductResponse>, PageMetaResponse){...}
+        // --> 필드에 Product가 아닌 ProductResponse 받는 것이 핵심
 */
