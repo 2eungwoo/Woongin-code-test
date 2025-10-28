@@ -44,8 +44,11 @@ public class ProductController {
     }
 
     @GetMapping(value = "/products")
-    public ResponseEntity<ProductListResponse> getProductListByCategory(@RequestBody GetProductListRequest dto){
-        Page<Product> productList = productService.getProductListByCategory(dto);
+    public ResponseEntity<ProductListResponse> getProductListByCategory(
+        @PathVariable(name = "productId") Long productId,
+        @RequestBody GetProductListRequest dto)
+    {
+        Page<Product> productList = productService.getProductListByCategory(productId, dto);
         return ResponseEntity.ok(new ProductListResponse(productList.getContent(), productList.getTotalPages(), productList.getTotalElements(), productList.getNumber()));
     }
 
