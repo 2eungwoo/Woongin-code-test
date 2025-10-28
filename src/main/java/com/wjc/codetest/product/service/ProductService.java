@@ -37,16 +37,16 @@ public class ProductService {
 
     @Transactional
     public Product updateProductById(Long productId, UpdateProductRequest dto) {
-        Product product = getProductById(productId);
-        product.updateProduct(dto.category(), dto.name());
-        return productRepository.save(product);
+        Product targetProduct = productValidator.validateExistOrThrow(productId);
+        targetProduct.updateProduct(dto.category(), dto.name());
+        return targetProduct;
 
     }
 
     @Transactional
     public void deleteProductById(Long productId) {
-        Product product = getProductById(productId);
-        productRepository.delete(product);
+        Product targetProduct = productValidator.validateExistOrThrow(productId);
+        productRepository.delete(targetProduct);
     }
 
     @Transactional(readOnly = true)
