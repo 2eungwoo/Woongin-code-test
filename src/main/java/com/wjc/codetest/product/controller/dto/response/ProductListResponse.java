@@ -1,4 +1,4 @@
-package com.wjc.codetest.product.model.response;
+package com.wjc.codetest.product.controller.dto.response;
 
 import com.wjc.codetest.product.model.domain.Product;
 import org.springframework.data.domain.Page;

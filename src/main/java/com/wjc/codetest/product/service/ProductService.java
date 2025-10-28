@@ -1,9 +1,9 @@
 package com.wjc.codetest.product.service;
 
-import com.wjc.codetest.product.model.request.CreateProductRequest;
-import com.wjc.codetest.product.model.request.GetProductListRequest;
+import com.wjc.codetest.product.controller.dto.request.CreateProductRequest;
+import com.wjc.codetest.product.controller.dto.request.GetProductListRequest;
 import com.wjc.codetest.product.model.domain.Product;
-import com.wjc.codetest.product.model.request.UpdateProductRequest;
+import com.wjc.codetest.product.controller.dto.request.UpdateProductRequest;
 import com.wjc.codetest.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,10 +1,10 @@
 package com.wjc.codetest.product.controller;
 
-import com.wjc.codetest.product.model.request.CreateProductRequest;
-import com.wjc.codetest.product.model.request.GetProductListRequest;
+import com.wjc.codetest.product.controller.dto.request.CreateProductRequest;
+import com.wjc.codetest.product.controller.dto.request.GetProductListRequest;
 import com.wjc.codetest.product.model.domain.Product;
-import com.wjc.codetest.product.model.request.UpdateProductRequest;
-import com.wjc.codetest.product.model.response.ProductListResponse;
+import com.wjc.codetest.product.controller.dto.request.UpdateProductRequest;
+import com.wjc.codetest.product.controller.dto.response.ProductListResponse;
 import com.wjc.codetest.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
