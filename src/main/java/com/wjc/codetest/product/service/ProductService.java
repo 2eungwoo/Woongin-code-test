@@ -24,6 +24,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductValidator productValidator;
 
+    @Transactional
     public Product createProduct(CreateProductRequest dto) {
         Product product = Product.createProduct(dto.category(), dto.name());
         return productRepository.save(product);
@@ -34,6 +35,7 @@ public class ProductService {
         return productValidator.validateExistOrThrow(productId);
     }
 
+    @Transactional
     public Product updateProductById(Long productId, UpdateProductRequest dto) {
         Product product = getProductById(productId);
         product.updateProduct(dto.category(), dto.name());
@@ -41,6 +43,7 @@ public class ProductService {
 
     }
 
+    @Transactional
     public void deleteProductById(Long productId) {
         Product product = getProductById(productId);
         productRepository.delete(product);
