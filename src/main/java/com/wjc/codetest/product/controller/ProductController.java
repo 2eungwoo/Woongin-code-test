@@ -45,14 +45,14 @@ public class ProductController {
     }
 
     @GetMapping(value = "/products")
-    public ResponseEntity<ProductListResponse> getProductList(@RequestBody GetProductListRequest dto) {
-        Page<Product> productList = productService.getProductList(dto);
+    public ResponseEntity<ProductListResponse> getProductListByCategory(@RequestBody GetProductListRequest dto) {
+        Page<Product> productList = productService.getProductListByCategory(dto);
         return ResponseEntity.ok(new ProductListResponse(productList.getContent(), productList.getTotalPages(), productList.getTotalElements(), productList.getNumber()));
     }
 
     @GetMapping(value = "/products/categories")
-    public ResponseEntity<List<String>> getUniqueProductListByCategories(){
-        List<String> uniqueCategories = productService.getUniqueProductListByCategories();
+    public ResponseEntity<List<String>> getUniqueCategories(){
+        List<String> uniqueCategories = productService.getUniqueCategories();
         return ResponseEntity.ok(uniqueCategories);
     }
 }
