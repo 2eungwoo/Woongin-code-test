@@ -29,8 +29,8 @@ public class ProductService {
     @Transactional
     public ProductResponse createProduct(CreateProductRequest dto) {
         Product product = Product.createProduct(dto.category(), dto.name());
-        Product targetProduct = productRepository.save(product);
-        return ProductResponse.from(targetProduct);
+        Product createdProduct = productRepository.save(product);
+        return ProductResponse.from(createdProduct);
     }
 
     @Transactional(readOnly = true)
@@ -47,16 +47,16 @@ public class ProductService {
     }
 
     @Transactional
-    public Long deleteProductById(Long productId) {
+    public ProductResponse deleteProductById(Long productId) {
         Product targetProduct = productValidator.validateExistOrThrow(productId);
         productRepository.delete(targetProduct);
-        return targetProduct.getId();
+        return ProductResponse.from(targetProduct);
     }
 
-    @Transactional(readOnly = true)
-    public Page<ProductListResponse> getProductListByCategory(GetProductListRequest dto) {
-        //
-    }
+//    @Transactional(readOnly = true)
+//    public Page<ProductListResponse> getProductListByCategory(GetProductListRequest dto) {
+//        //
+//    }
 
     @Transactional(readOnly = true)
     public List<String> getUniqueCategories() {

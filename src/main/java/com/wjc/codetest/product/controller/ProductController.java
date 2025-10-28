@@ -27,10 +27,9 @@ public class ProductController {
     }
 
     @PostMapping(value = "/products")
-    public ResponseEntity<Long> createProduct(@RequestBody CreateProductRequest dto){
-        Product product = productService.createProduct(dto);
-        ProductResponse productResponse = ProductResponse.from(product);
-        return ResponseEntity.ok(productResponse.id());
+    public ResponseEntity<ProductResponse> createProduct(@RequestBody CreateProductRequest dto){
+        ProductResponse responseDto = productService.createProduct(dto);
+        return ResponseEntity.ok(responseDto);
     }
 
     @DeleteMapping(value = "/products/{productId}")
@@ -46,10 +45,10 @@ public class ProductController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @GetMapping(value = "/products")
-    public ResponseEntity<ProductListResponse> getProductListByCategory(@RequestBody GetProductListRequest dto) {
-        //
-    }
+//    @GetMapping(value = "/products")
+//    public ResponseEntity<ProductListResponse> getProductListByCategory(@RequestBody GetProductListRequest dto) {
+//        //
+//    }
 
     @GetMapping(value = "/products/categories")
     public ResponseEntity<List<String>> getUniqueCategories(){
