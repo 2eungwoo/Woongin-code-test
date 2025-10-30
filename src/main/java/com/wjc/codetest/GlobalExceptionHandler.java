@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
            지금은 하나의 Handler 메소드만 있으므로 중복 정도가 낮지만,
            이후 핸들러 클래스가 확장됨에 따라 가독성 및 중복 방지 차원에서 고려해볼만하다고 생각합니다.
 
+        ps. 만약 도메인이 확장된다면 advice 범위 수정도 까먹으면 안됨
+
     [요약]
         메소드의 @ResponseBody 삭제 후 클래스 상단에는 @RestControllerAdvice로 변경
  */
