@@ -50,21 +50,29 @@ import java.util.List;
  */
 @RestController
 @RequestMapping
-// @RequestMapping
-// 이 어노테이션의 활용이 올바르게 이뤄지지 않고 있습니다.
-// 앞서 언급한대로 url을 재설계하고 해당 어노테이션을 활용하도록 수정하거나
-// 또는 각 mapping 경로에만 작성하는 방법 중 하나를 선택하도록 하면 좋을 것 같습니다.
-// 개인적으로는 mapping경로 옆에 url 전문을 명시하는 것이 api 개수가 많아지더라도
-// 헷갈리지 않게 유지보수할 수 있었던 것 같습니다.
+/*
+    [의견] @RequestMapping 사용에 관한 의견
+
+      이 어노테이션은 현재 존재 이유가 없습니다.
+      앞서 언급드린대로 url 재설계 먼저 검토 후 해당 어노테이션을 활용하거나
+      각 메소드에만 mapping 경로를 설정하는 방법 중 하나를 선택하면 될 것 같습니다.
+
+      개인적으로는 mapping 경로에만 명시하는 것이 가독성이 낫다고 생각하는 입장입니다.
+      이는 팀 내 컨벤션을 우선으로 두되 정해지지 않았다면 의견 공유 후 결정하면 될 것 같습니다.
+ */
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
 
-    // 파라미터로 id를 받아서 단건 조회를 수행하므로
-    // GET: /products/{productId} 로 개선해볼 수 있을 것 같습니다.
-    // 이렇게 하면 http메소드에 get 하겠다는 행동을 명시했으므로
-    // url에 get을 포함시킬 필요가 없어집니다.
-    // 또한 productId라는 파라미터를 받곘다고 명시했으므로 id로 product 단건을 조회하겠다는 의미가 내포됩니다.
+    /*
+        [보완 의견]
+            파라미터로 id를 받아서 단건 조회를 수행하므로
+            GET: /products/{productId} 로 개선해볼 수 있을 것 같습니다.
+            이렇게 하면 http메소드에 get 하겠다는 행동을 명시했기 때문에 url에 get을 포함시킬 필요가 없어집니다.
+            도메인을 복수형으로 명시하면 복수조회인지 단건조회인지 헷갈리지 않느냐는 의견에 대해서는
+            파라미터 여부에 따라 구분이 가능하다는 생각입니다.
+            이에 관련해서 아래의 목록 조회 메소드와 비교해보시면 좋을 것 같습니다.
+     */
     @GetMapping(value = "/get/product/by/{productId}")
     public ResponseEntity<Product> getProductById(@PathVariable(name = "productId") Long productId){
         Product product = productService.getProductById(productId);
@@ -74,9 +82,12 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
-    // 데이터 생성 메소드이므로
-    // POST: /products 로 수정할 수 있을 것 같습니다.
-    // 수정 목적과 기대효과 등은 앞서 get요청 케이스의 맥락과 동일합니다.
+    /*
+        [보완 의견]
+            데이터 생성 메소드이므로
+            POST: /products 로 수정할 수 있을 것 같습니다.
+            수정 목적과 기대효과 등은 앞서 get요청 케이스의 맥락과 동일합니다.
+     */
     @PostMapping(value = "/create/product")
     public ResponseEntity<Product> createProduct(@RequestBody CreateProductRequest dto){
         Product product = productService.create(dto);
@@ -88,11 +99,13 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
-    // 데이터 단건 삭제이므로
-    // DELETE: /products/{productId} 를 추천해봅니다.
-    // GET 제외, http 메소드는 데이터를 수정한다는 점에서
-    // 어떤 것을 쓰더라도 무방하다고 하지만, 역시 행위를 명확하게 보여주기 위해서는
-    // api 목적과 동작에 일치하는 메소드인 @DeleteMapping을 쓰는 것이 어떨까 합니다.
+    /*
+        [보완 의견]
+            데이터 단건 삭제이므로
+            DELETE: /products/{productId} 를 추천해봅니다.
+            GET 제외, http 메소드는 데이터를 수정한다는 점에서 어떤 것을 쓰더라도 무방하다고 하지만,
+            역시 행위를 명확하게 보여주기 위해서는 api 목적과 동작에 일치하는 메소드인 @DeleteMapping을 쓰는 것이 어떨까 합니다.
+     */
     @PostMapping(value = "/delete/product/{productId}")
     public ResponseEntity<Boolean> deleteProduct(@PathVariable(name = "productId") Long productId){
         productService.deleteById(productId);
@@ -103,15 +116,17 @@ public class ProductController {
         return ResponseEntity.ok(true);
     }
 
-    // 데이터 단건 수정이므로
-    // PUT: /products/{productId} 혹은 /products
-    // PATCH: /products/{productId} 혹은 /products
-    // 로 바꾸면 어떨까 합니다.
-    // http 메소드의 경우 팀 내 컨벤션에 따라 결정하거나,
-    // 데이터 수정이 전체입력 기반인지 부분입력 기반인지 목적에 따라 결정하면 될 것 같습니다.
-    // 다만 dto 코멘트에도 언급했지만, url이 아닌 requestDTO에 타겟ID를 포함하고 있는 점,
-    // dto 클래스의 생성자가 부분필드를 받고 있는 점을 보아 (이 부분에 대한 언급은 분리했습니다.)
-    // 부분 수정을 의도했다고 판단되어 @PatchMapping을 추천해보겠습니다.
+    /*
+        [보완 의견]
+            데이터 단건 수정이므로
+               a) PUT: /products/{productId} 혹은 /products
+               b) PATCH: /products/{productId} 혹은 /products
+            http 메소드의 경우 팀 내 컨벤션에 따라 결정하거나,
+            데이터 수정이 전체입력 기반인지 부분입력 기반인지 목적에 따라 결정하면 될 것 같습니다.
+            다만 dto 코멘트에도 언급했지만, url이 아닌 requestDTO에 타겟ID를 포함하고 있는 점,
+            dto 클래스의 생성자가 부분필드를 받고 있는 점을 보아 (이 부분에 대한 언급은 분리했습니다.)
+            부분 수정을 의도했다고 판단되어 @PatchMapping을 추천해보겠습니다.
+     */
     @PostMapping(value = "/update/product")
     public ResponseEntity<Product> updateProduct(@RequestBody UpdateProductRequest dto){
         // url에 {productId} 같은 파라미터를 받지 않고
@@ -122,13 +137,16 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
-    // 데이터 목록 조회 이므로
-    // GET: /products 로 바꾸면 어떨까 합니다.
-    // url에 '목록조회' 임을 명시하기 위해 list 키워드를 사용했는데,
-    // 이는 도메인을 복수형으로 명시했다는 점에서 충분히 의도를 포함할 수 있다고 생각합니다.
-    // (products/{id}의 경우는 단건 조회를 명시함)
-    // 또한 read-only 목적의 get과 post의 경우 브라우저 내에서 동작의 차이가 존재하므로
-    // @PostMapping이 아니라 @GetMapping으로 수정하는 것이 좋아보입니다.
+    /*
+        [보완 의견]
+            데이터 목록 조회 이므로
+            GET: /products 로 바꾸면 어떨까 합니다.
+            url에 '목록조회' 임을 명시하기 위해 list 키워드를 사용했는데,
+            이는 도메인을 복수형으로 명시했다는 점에서 충분히 의도를 포함할 수 있다고 생각합니다.
+            (products/{id}의 경우는 단건 조회를 명시함)
+            또한 read-only 목적의 get과 post의 경우 브라우저 내에서 동작의 차이가 존재하므로
+            @PostMapping이 아니라 @GetMapping으로 수정하는 것이 좋아보입니다.
+     */
     @PostMapping(value = "/product/list")
     public ResponseEntity<ProductListResponse> getProductListByCategory(@RequestBody GetProductListRequest dto){
         // 마찬가지로 메소드 이름의 일치 여부에 대한 의견입니다.
@@ -146,13 +164,16 @@ public class ProductController {
         // 이 문제는 현재 코드가 정상 동작하지 않을 것이라고 쉽게 추측됩니다.
     }
 
-    // 데이터 목록 조회로 우선 확인됩니다.
-    // 메소드만 보고서는 바로 위의 메소드와 어떤 차이가 있는지 파악하기가 어렵습니다.
-    // service 메소드와 쿼리메소드 확인 후 동작의 차이를 인지할 수 있었습니다.
-    // 따라서 GET: /products/categories 로 수정하면 어떨까 합니다.
-    // category를 조회하는 쿼리이므로 GET: /categories 를 고려해볼 수도 있었으나
-    // category는 product 내에 포함된 속성이고, product -> category 로 1 depth 만큼 넘어가므로
-    // /products/categories 의 형식으로 추천드렸습니다.
+    /*
+        [보완 의견]
+            데이터 목록 조회로 우선 확인됩니다.
+            메소드만 보고서는 바로 위의 메소드와 어떤 차이가 있는지 파악하기가 어렵습니다.
+            service 메소드와 쿼리메소드 확인 후 동작의 차이를 인지할 수 있었습니다.
+            따라서 GET: /products/categories 로 수정하면 어떨까 합니다.
+            category를 조회하는 쿼리이므로 GET: /categories 를 고려해볼 수도 있었으나
+            category는 product 내에 포함된 속성이고, product -> category 로 1 depth 만큼 넘어가므로
+            /products/categories 의 형식으로 추천드렸습니다.
+     */
     @GetMapping(value = "/product/category/list")
     public ResponseEntity<List<String>> getProductListByCategory(){
         // 마찬가지로 컨트롤러, 서비스 메소드를 통일하는 것이 어떨까 합니다.
