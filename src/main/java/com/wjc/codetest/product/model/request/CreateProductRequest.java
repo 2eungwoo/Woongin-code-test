@@ -19,6 +19,10 @@ public class CreateProductRequest {
     }
 }
 /*
+    ps. 해당 CreateProductRequest.java 에 코멘트할 내용 외에도
+        dto 클래스가 공통적으로 가진 전반적인 문제에 관해서 주로 다뤘습니다.
+        이후 각 클래스에서 상세내용을 추가로 언급했습니다.
+
     [문제 및 의견] DTO 클래스의 설계적 보완점 및 디렉토리 위치
 
         1. 디렉토리 위치(의견)
